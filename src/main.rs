@@ -18,6 +18,7 @@ fn hello() -> HelloTemplate<'static> {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
+        .configure(rocket::Config::figment().merge(("port", 3949)))
         .mount("/", routes![hello])
         // .mount("/static", FileServer::from(relative!("static/")))
 }
