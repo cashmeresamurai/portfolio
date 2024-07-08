@@ -19,13 +19,13 @@ fn hello() -> HelloTemplate<'static> {
 
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/static");
 
-// Handler für statische Dateien
 #[rocket::get("/static/<path..>", rank = 100)]
 async fn static_files(path: PathBuf) -> Option<(ContentType, Vec<u8>)> {
     let path_str = path.to_string_lossy();
     let data = PROJECT_DIR.get_file(&*path_str)?;
 
-    let content_type = path.extension()
+    let content_type = path
+        .extension()
         .and_then(|e| e.to_str())
         .and_then(ContentType::from_extension)
         .unwrap_or(ContentType::Binary);
