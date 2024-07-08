@@ -19,5 +19,5 @@ fn hello() -> HelloTemplate<'static> {
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![hello])
-        .mount("/static", FileServer::from(relative!("/static/")))
+        .mount("/static", FileServer::from(relative!("static/")))
 }
