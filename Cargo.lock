@@ -213,6 +213,7 @@ dependencies = [
  "askama_rocket",
  "include_dir",
  "rocket",
+ "rocket-include-dir",
 ]
 
 [[package]]
@@ -1019,6 +1020,16 @@ dependencies = [
  "ubyte",
  "version_check",
  "yansi",
+]
+
+[[package]]
+name = "rocket-include-dir"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "abee13f8b33f1c2ab0cbb0fdfbd6e474dbdfa8ea77c0d5384af969b0e7a87c8c"
+dependencies = [
+ "include_dir",
+ "rocket",
 ]
 
 [[package]]
