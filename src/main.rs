@@ -7,14 +7,12 @@ use rocket::http::ContentType;
 use std::path::PathBuf;
 
 #[derive(Template)]
-#[template(path = "hello.html")]
-struct HelloTemplate<'a> {
-    name: &'a str,
-}
+#[template(path = "index.html")]
+struct IndexTemplate;
 
 #[rocket::get("/")]
-fn hello() -> HelloTemplate<'static> {
-    HelloTemplate { name: "world" }
+fn index() -> IndexTemplate{
+    IndexTemplate
 }
 
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/static");
@@ -41,5 +39,5 @@ fn rocket() -> _ {
                 .merge(("address", "0.0.0.0"))
                 .merge(("port", 3949)),
         )
-        .mount("/", routes![hello, static_files])
+        .mount("/", routes![index, static_files])
 }
