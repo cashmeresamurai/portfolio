@@ -2,8 +2,6 @@ use askama_rocket::Template;
 #[macro_use]
 extern crate rocket;
 
-// use rocket::fs::{FileServer, relative};
-
 #[derive(Template)]
 #[template(path = "hello.html")]
 struct HelloTemplate<'a> {
@@ -18,7 +16,9 @@ fn hello() -> HelloTemplate<'static> {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .configure(rocket::Config::figment().merge(("port", 3949)))
+        .configure(rocket::Config::figment()
+            .merge(("address", "0.0.0.0"))
+            .merge(("port", 3949))
+        )
         .mount("/", routes![hello])
-        // .mount("/static", FileServer::from(relative!("static/")))
 }
