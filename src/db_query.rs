@@ -8,8 +8,8 @@ pub struct AboutMe {
     pub content: String,
 }
 
-pub fn db_query() -> Result<()> {
-    let db = Database::open_file("test-polo.db")?;
+pub fn init_db() -> Result<()> {
+    let db = Database::open_memory()?;
     let col = db.collection::<AboutMe>("about_me");
     let docs = vec![
         AboutMe { entry_title: "About Me".to_string(), content: "I'm 23 years old and studying Computer Science with a focus on Digital Forensics/Cyber Security in Hamburg. From a young age, I was always technically inclined, but my interest in computer science only developed during my studies. The topic that has accompanied me throughout the years is automation. I've always found it fascinating to optimize routine tasks so they can be performed entirely independently - and preferably simultaneously.".to_string() },
@@ -21,13 +21,8 @@ pub fn db_query() -> Result<()> {
     Ok(())
 }
 
-pub fn open_db() -> Result<()>{
-    let db = Database::open_file("test-polo.db")?;
-    Ok(())
-}
-
 pub fn return_collection() -> Result<Vec<AboutMe>> {
-    let db = Database::open_file("test-polo.db")?;
+    let db = Database::open_memory()?;
     let col = db.collection::<AboutMe>("about_me");
     let about_me_entries = col.find(None)?;
     let about_me_vec: Vec<AboutMe> = about_me_entries

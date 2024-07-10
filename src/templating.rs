@@ -1,7 +1,7 @@
 use crate::db_query::{return_collection, AboutMe};
 use askama_rocket::Template;
 use include_dir::{include_dir, Dir};
-use polodb_core::bson::{doc, Document};
+use polodb_core::bson::doc;
 use rocket::http::ContentType;
 use std::path::PathBuf;
 

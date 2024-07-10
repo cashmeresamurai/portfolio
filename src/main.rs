@@ -3,26 +3,13 @@ extern crate rocket;
 mod templating;
 use templating::{about_me, index, static_files};
 mod db_query;
-use db_query::{db_query, return_collection, open_db};
+use db_query::init_db;
 #[launch]
 fn rocket() -> _ {
-
-    match open_db() {
-        Ok(()) => println!("db opened successful"),
+    match init_db() {
+        Ok(()) => println!("db initialized successful"),
         Err(e) => println!("Error {}", e),
     }
-    // match db_query() {
-    //     Ok(()) => println!("db created successful"),
-    //     Err(e) => println!("Error {}", e),
-    // }
-    // match return_collection() {
-    //     Ok(collection) => {
-    //         println!("Collection returned successfully: {:?}", collection);
-    //     },
-    //     Err(e) => {
-    //         println!("Error returning collection: {}", e);
-    //     }
-    // }
     rocket::build()
         .configure(
             rocket::Config::figment()
