@@ -1,8 +1,10 @@
+use crate::db_query::{return_collection, AboutMe};
 use askama_rocket::Template;
+use polodb_core::bson::{Document, doc};
 use include_dir::{include_dir, Dir};
 use rocket::http::ContentType;
 use std::path::PathBuf;
-// index template
+
 #[derive(Template)]
 #[template(path = "index.html")]
 pub struct IndexTemplate;
@@ -14,10 +16,16 @@ pub fn index() -> IndexTemplate {
 
 #[derive(Template)]
 #[template(path = "about_me.html")]
-pub struct AboutMeTemplate;
+pub struct AboutMeTemplate {
+    about_me_entries: Vec<AboutMe>,
+}
+
 #[rocket::get("/about-me")]
-pub fn about_me() -> AboutMeTemplate{
-    AboutMeTemplate
+pub async fn about_me() -> AboutMeTemplate {
+    let about_me_entries = return_collection().unwrap();
+    AboutMeTemplate {
+        about_me_entries,
+    }
 }
 
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/static");
