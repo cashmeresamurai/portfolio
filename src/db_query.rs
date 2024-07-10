@@ -21,8 +21,13 @@ pub fn db_query() -> Result<()> {
     Ok(())
 }
 
-pub fn return_collection() -> Result<Vec<AboutMe>> {
+pub fn open_db() -> Result<()>{
     let db = Database::open_file("test-polo.db")?;
+    Ok(())
+}
+
+pub fn return_collection() -> Result<Vec<AboutMe>> {
+    let db = Database::open_file("../static/test-polo.db")?;
     let col = db.collection::<AboutMe>("about_me");
     let about_me_entries = col.find(None)?;
     let about_me_vec: Vec<AboutMe> = about_me_entries

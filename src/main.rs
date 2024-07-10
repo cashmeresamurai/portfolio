@@ -3,9 +3,14 @@ extern crate rocket;
 mod templating;
 use templating::{about_me, index, static_files};
 mod db_query;
-use db_query::{db_query, return_collection};
+use db_query::{db_query, return_collection, open_db};
 #[launch]
 fn rocket() -> _ {
+
+    match open_db() {
+        Ok(()) => println!("db opened successful"),
+        Err(e) => println!("Error {}", e),
+    }
     // match db_query() {
     //     Ok(()) => println!("db created successful"),
     //     Err(e) => println!("Error {}", e),

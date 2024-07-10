@@ -1,7 +1,7 @@
 use crate::db_query::{return_collection, AboutMe};
 use askama_rocket::Template;
-use polodb_core::bson::{Document, doc};
 use include_dir::{include_dir, Dir};
+use polodb_core::bson::{doc, Document};
 use rocket::http::ContentType;
 use std::path::PathBuf;
 
@@ -23,9 +23,7 @@ pub struct AboutMeTemplate {
 #[rocket::get("/about-me")]
 pub async fn about_me() -> AboutMeTemplate {
     let about_me_entries = return_collection().unwrap();
-    AboutMeTemplate {
-        about_me_entries,
-    }
+    AboutMeTemplate { about_me_entries }
 }
 
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/static");
