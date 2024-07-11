@@ -11,7 +11,7 @@ pub struct AboutMe {
 pub async fn fetch_about_me() -> Result<Vec<AboutMe>> {
     let client = Client::new();
     let res = client
-        .get("http://127.0.0.1:8000/records")
+        .get("http://xswk04c.95.217.222.184.sslip.io")
         .send()
         .await?
         .json::<Vec<AboutMe>>()
