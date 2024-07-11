@@ -1,7 +1,9 @@
 #[macro_use]
 extern crate rocket;
 mod templating;
-use templating::{about_me, index, projects, static_files};
+use templating::{
+    about_me, index, projects, return_matrix_client, return_matrix_server, static_files,
+};
 mod db_query;
 #[launch]
 fn rocket() -> _ {
@@ -11,5 +13,15 @@ fn rocket() -> _ {
                 .merge(("address", "0.0.0.0"))
                 .merge(("port", 3949)),
         )
-        .mount("/", routes![index, about_me, static_files, projects])
+        .mount(
+            "/",
+            routes![
+                index,
+                about_me,
+                static_files,
+                projects,
+                return_matrix_server,
+                return_matrix_client
+            ],
+        )
 }
