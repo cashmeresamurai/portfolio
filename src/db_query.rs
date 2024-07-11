@@ -1,19 +1,21 @@
-use anyhow::{Context, Result};
-use polodb_core::bson::{doc, Document};
-use polodb_core::Database;
+use anyhow::Result;
 use serde::{Deserialize, Serialize};
+use reqwest::Client;
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AboutMe {
     pub entry_title: String,
     pub content: String,
 }
 
-pub fn return_collection() -> Result<Vec<AboutMe>> {
-    let about_me_vec = vec![
-        AboutMe { entry_title: "About Me".to_string(), content: "I'm 23 years old and studying Computer Science with a focus on Digital Forensics/Cyber Security in Hamburg. From a young age, I was always technically inclined, but my interest in computer science only developed during my studies. The topic that has accompanied me throughout the years is automation. I've always found it fascinating to optimize routine tasks so they can be performed entirely independently - and preferably simultaneously.".to_string() },
-        AboutMe { entry_title: "Tech Stack".to_string(), content: "I mainly write code for my projects using Rust and Python. For frontend development, I use HTML with TailwindCSS, DaisyUI and HTMX to make the website more interactive".to_string() },
-        AboutMe { entry_title: "Deployment and Hosting".to_string(), content: "I usually handle deployment and hosting myself by renting a Linux VPS and using Docker. This has the advantages of saving me costs, allowing me direct access to the machine if intense changes are needed, and learning from various projects - from setup to deployment.".to_string() },
-        AboutMe { entry_title: "Programming Environment".to_string(), content: "My preferred programming environment is Linux. While you can program anywhere, I personally like working with terminals best. If Windows is required for development, I usually use the Developer Edition of Windows 11 in a virtual machine (which is provided directly by Microsoft).".to_string() },
-    ];
-    Ok(about_me_vec)
+pub async fn fetch_about_me() -> Result<Vec<AboutMe>> {
+    let client = Client::new();
+    let res = client
+        .get("http://127.0.0.1:8000/records")
+        .send()
+        .await?
+        .json::<Vec<AboutMe>>()
+        .await?;
+
+    Ok(res)
 }

@@ -1,10 +1,8 @@
-use crate::db_query::{return_collection, AboutMe};
+use crate::db_query::{fetch_about_me, AboutMe};
 use askama_rocket::Template;
 use include_dir::{include_dir, Dir};
-use polodb_core::bson::doc;
 use rocket::http::ContentType;
 use std::path::PathBuf;
-
 #[derive(Template)]
 #[template(path = "index.html")]
 pub struct IndexTemplate;
@@ -22,10 +20,18 @@ pub struct AboutMeTemplate {
 
 #[rocket::get("/about-me")]
 pub async fn about_me() -> AboutMeTemplate {
-    let about_me_entries = return_collection().unwrap();
-    AboutMeTemplate { about_me_entries }
+    let about_me_entries = fetch_about_me().await;
+    AboutMeTemplate { about_me_entries: about_me_entries.expect("could not unpack ") }
 }
 
+#[derive(Template)]
+#[template(path = "projects.html")]
+pub struct ProjectsTemplate;
+
+#[rocket::get("/projects")]
+pub async fn projects() -> ProjectsTemplate {
+    ProjectsTemplate
+}
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/static");
 
 #[rocket::get("/static/<path..>", rank = 100)]
