@@ -2,6 +2,10 @@ use crate::db_query::{fetch_about_me, AboutMe};
 use askama_rocket::Template;
 use include_dir::{include_dir, Dir};
 use rocket::http::ContentType;
+use rocket_json_response::{
+    serialize_to_json, JSONResponse, JSONResponseCode, JSONResponseWithoutData,
+};
+use serde::Serialize;
 use std::path::PathBuf;
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -21,7 +25,9 @@ pub struct AboutMeTemplate {
 #[rocket::get("/about-me")]
 pub async fn about_me() -> AboutMeTemplate {
     let about_me_entries = fetch_about_me().await;
-    AboutMeTemplate { about_me_entries: about_me_entries.expect("could not unpack ") }
+    AboutMeTemplate {
+        about_me_entries: about_me_entries.expect("could not unpack "),
+    }
 }
 
 #[derive(Template)]
@@ -46,4 +52,43 @@ pub async fn static_files(path: PathBuf) -> Option<(ContentType, Vec<u8>)> {
         .unwrap_or(ContentType::Binary);
 
     Some((content_type, data.contents().to_vec()))
+}
+
+#[derive(Serialize)]
+struct MatrixClient {
+    #[serde(rename = "m.homeserver")]
+    homeserver: HomeServer,
+}
+serialize_to_json!(MatrixClient);
+
+#[derive(Serialize)]
+struct HomeServer {
+    base_url: String,
+}
+
+#[derive(Serialize)]
+struct MatrixServer {
+    #[serde(rename = "m.server")]
+    server: String,
+}
+serialize_to_json!(MatrixServer);
+
+#[rocket::get("/.well-known/matrix/client")]
+pub async fn return_matrix_client() -> JSONResponse<'static, MatrixClient> {
+    let response = MatrixClient {
+        homeserver: HomeServer {
+            base_url: "https://matrix.sakura.pm".to_string(),
+        },
+    };
+
+    JSONResponse::ok(response)
+}
+
+#[rocket::get("/.well-known/matrix/server")]
+pub async fn return_matrix_server() -> JSONResponse<'static, MatrixServer> {
+    let response = MatrixServer {
+        server: "matrix.sakura.pm:8448".to_string(),
+    };
+
+    JSONResponse::ok(response)
 }

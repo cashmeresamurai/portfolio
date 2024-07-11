@@ -246,6 +246,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06ea2b9bc92be3c2baa9334a323ebca2d6f074ff852cd1d7b11064035cd3868f"
 
 [[package]]
+name = "debug-helper"
+version = "0.3.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f578e8e2c440e7297e008bb5486a3a8a194775224bbc23729b0dbdfaeebf162e"
+
+[[package]]
 name = "deranged"
 version = "0.3.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -670,6 +676,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "json-gettext"
+version = "4.0.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1f89fec7eede8f712ec16433b1bac74445e9815294c8150d19b3bd2b685ebe0d"
+dependencies = [
+ "manifest-dir-macros",
+ "regex",
+ "rocket",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -722,6 +741,18 @@ dependencies = [
  "serde_json",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "manifest-dir-macros"
+version = "0.1.18"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c6d40de1ccdbf8bde2eaa0750595478a368f7b3a3f89c426e3454f64e29f593"
+dependencies = [
+ "once_cell",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -1008,6 +1039,7 @@ dependencies = [
  "reqwest",
  "rocket",
  "rocket-include-dir",
+ "rocket-json-response",
  "serde",
  "serde_json",
  "tokio",
@@ -1243,6 +1275,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "abee13f8b33f1c2ab0cbb0fdfbd6e474dbdfa8ea77c0d5384af969b0e7a87c8c"
 dependencies = [
  "include_dir",
+ "rocket",
+]
+
+[[package]]
+name = "rocket-json-response"
+version = "0.6.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "51daf588d903387f9c01c66129f84eca6fc4da76af47ff9eea7fe2f8f242714c"
+dependencies = [
+ "debug-helper",
+ "json-gettext",
  "rocket",
 ]
 
