@@ -43,7 +43,7 @@ pub async fn fetch_about_me() -> Result<Vec<AboutMe>> {
     ];
 
     let res = client
-        .get("http://pocketbase-ikg0cog.95.217.222.184.sslip.io/api/collections/mlkl9ra6e6ts7jt/records")
+        .get("https://pocketbase.sakura.pm/api/collections/mlkl9ra6e6ts7jt/records")
         .headers(headers)
         .query(&params)
         .send()
