@@ -22,7 +22,7 @@ struct ResponseData {
 
 pub async fn fetch_about_me() -> Result<Vec<AboutMe>> {
     let client = Client::new();
-    let env = &env::var("Authorization").expect("could not get authorization key");
+    let authorization: &str = &env::var("Authorization").expect("could not get authorization key");
     let mut headers = HeaderMap::new();
     headers.insert("Accept", HeaderValue::from_static("*/*"));
     headers.insert("Authorization", HeaderValue::from_static(authorization));
