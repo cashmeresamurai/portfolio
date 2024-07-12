@@ -63,13 +63,68 @@ pub async fn fetch_about_me() -> Result<Vec<AboutMe>> {
     Ok(about_me_vec)
 }
 
-#[tokio::main]
-async fn main() -> Result<()> {
-    let about_me = fetch_about_me().await?;
-    for entry in about_me {
-        println!("Entry Title: {}", entry.entry_title);
-        println!("Content: {}", entry.content);
-        println!("------");
-    }
-    Ok(())
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ProjectShowcase {
+    pub project_slug: String,
+    pub project_title: String,
+    pub project_description: String,
+    pub project_image: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct ItemProject {
+    id: String,
+    project_slug: String,
+    project_title: String,
+    project_description: String,
+    project_image: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct ResponseDataProject {
+    items: Vec<ItemProject>,
+}
+pub async fn fetch_projects() -> Result<Vec<ProjectShowcase>> {
+    let client = Client::new();
+
+    // Abrufen der Umgebungsvariablen zur Laufzeit
+    let authorization = env::var("AUTHORIZATION").expect("could not get authorization key");
+
+    let mut headers = HeaderMap::new();
+    headers.insert("Accept", HeaderValue::from_static("*/*"));
+    headers.insert("Authorization", HeaderValue::from_str(&authorization)?);
+    headers.insert("Content-Type", HeaderValue::from_static("application/json"));
+
+    let params = [
+        ("page", "1"),
+        ("perPage", "40"),
+        ("sort", "created"),
+        ("skipTotal", "1"),
+        ("filter", ""),
+        ("expand", ""),
+        ("fields", ""),
+    ];
+    let collection: String = String::from("z6b7hsoqbkmfwmi");
+    let res = client
+        .get(format!("https://pocketbase.sakura.pm/api/collections/{}/records", &collection))
+        .headers(headers)
+        .query(&params)
+        .send()
+        .await?
+        .json::<ResponseDataProject>()
+        .await?;
+
+    let project_showcase_vec = res
+        .items
+        .into_iter()
+        .map(|item| ProjectShowcase {
+            
+            project_slug: item.project_slug,
+            project_title: item.project_title,
+            project_description: item.project_description,
+            project_image: format!("https://pocketbase.sakura.pm/api/files/{}/{}/{}", collection, item.id, item.project_image)
+        })
+        .collect();
+
+    Ok(project_showcase_vec)
 }

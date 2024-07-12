@@ -1,4 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 {% include "components/hero.html" %}
+    <script>
+        async function fetchCreepJSData() {
+            try {
+                const response = await fetch('http://localhost:8000'); // Anpassen, falls der Endpunkt anders ist
+                const data = await response.json();
+                document.getElementById('fingerprint-data').textContent = JSON.stringify(data, null, 2);
+                console.log(data);
+            } catch (error) {
+                console.error('Fehler beim Abrufen der CreepJS-Daten:', error);
+            }
+        }
+
+        fetchCreepJSData();
+    </script>
 {% endblock %}

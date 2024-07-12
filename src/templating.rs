@@ -1,4 +1,4 @@
-use crate::db_query::{fetch_about_me, AboutMe};
+use crate::db_query::{fetch_about_me, fetch_projects, AboutMe, ProjectShowcase};
 use askama_rocket::Template;
 use include_dir::{include_dir, Dir};
 use rocket::http::ContentType;
@@ -27,17 +27,25 @@ pub struct AboutMeTemplate {
 pub async fn about_me() -> AboutMeTemplate {
     let about_me_entries = fetch_about_me().await;
     AboutMeTemplate {
-        about_me_entries: about_me_entries.expect("could not unpack "),
+        about_me_entries: about_me_entries
+            .expect("could not fetch About Me Entries from Pocketbase"),
     }
 }
 
 #[derive(Template)]
 #[template(path = "projects.html")]
-pub struct ProjectsTemplate;
+pub struct ProjectsTemplate {
+    projects_showcase_vec: Vec<ProjectShowcase>,
+}
 
 #[rocket::get("/projects")]
 pub async fn projects() -> ProjectsTemplate {
-    ProjectsTemplate
+    let projects_vec = fetch_projects().await;
+    println!("{:#?}", projects_vec);
+    ProjectsTemplate {
+        projects_showcase_vec: projects_vec
+            .expect("could not fetch Project Showcase Entries from Pocketbase"),
+    }
 }
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/static");
 

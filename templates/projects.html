@@ -1,30 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
-<div
-  class="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 py-4">
-  <div class="rounded-xl min-auto flex flex-col" hx-get="/blog-entry/" hx-trigger="click"
-    hx-swap="innerHTML" hx-target="body">
-    <div class="card mt-4 mr-4 mb-4 w-full shadow min-h-full">
-      <figure>
-        <img src="https://c.tenor.com/PlJMXv-v5OIAAAAC/tenor.gif" />
-      </figure>
-      <div class="card-body">
-        <h2 class="card-title"></h2>
-        <p></p>
-      </div>
+<!--
+    pub project_slug: String,
+    pub project_title: String,
+    pub project_description: String,
+    pub project_image: String,
+ -->
+  {% for project in projects_showcase_vec %}
+<div class="min-h-screen flex flex-col p-8 sm:p-16 md:p-24 justify-center bg-white">
+  <!-- Themes: blue, purple and teal -->
+  <div data-theme="teal" class="mx-auto max-w-6xl">
+    <h2 class="sr-only"></h2>
+    <section class="font-sans text-black">
+      <div class="[ lg:flex lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
+        <div class="flex-shrink-0 self-stretch sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
+          <div class="h-full">
+            <article class="h-full">
+              <div class="h-full">
+                <img class="h-full object-cover" src="{{project.project_image}}" width="733" height="412" alt='""' typeof="foaf:Image" />
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="p-6 bg-grey">
+          <div class="leading-relaxed">
+            <h2 class="leading-tight text-4xl font-bold">{{project.project_title}}</h2>
+            <p class="mt-4">{{project.project_description}}</p>
+            <!-- <p class="mt-4">In a jam-packed day filled with keynote sessions, panels, and virtual networking we explored topics including design leadership, UX ethics, designing for emotion and innovation at scale.</p> -->
+            <p><a class="mt-4 button button--secondary" href="https://{{project.project_slug}}.sakura.pm/">Explore this event</a></p>
+    <div class="relative inline-flex  group">
+        <div
+            class="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt">
+        </div>
+        <a href="#" title="Get quote now"
+            class="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+            role="button">Get it now
+        </a>
     </div>
-  </div>
-  <div class="rounded-xl min-auto flex flex-col" hx-get="/blog-entry/" hx-trigger="click"
-    hx-swap="innerHTML" hx-target="body">
-    <div class="card mt-4 mr-4 mb-4 w-full shadow min-h-full">
-      <figure>
-        <img src="https://c.tenor.com/PlJMXv-v5OIAAAAC/tenor.gif" />
-      </figure>
-      <div class="card-body">
-        <h2 class="card-title"></h2>
-        <p></p>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
 </div>
+  {% endfor %}
 {% endblock %}
