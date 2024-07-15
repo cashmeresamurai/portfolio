@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for project in projects_showcase_vec %}
+    <!-- Modal Button and Dialog -->
+    <button class="btn fixed bottom-5 right-5" hx-get="/modal" hx-target="#htmx_modal" hx-trigger="click" hx-on:click="daisy_modal.showModal()">Open Modal</button>
+
+    <dialog id="daisy_modal" class="modal">
+      <div class="modal-box" id="htmx_modal">
+        <h3 class="text-lg font-bold">Hello!</h3>
+        <p class="py-4">Press ESC key or click outside to close</p>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button class="btn">close</button>
+      </form>
+    </dialog>
+
+    <!-- Carousel mit angepasster Breite -->
+    <div class="container mx-auto px-4 lg:px-6 py-8 lg:py-16">
+      <div class="text-center mb-10">
+        <h2 class="text-4xl tracking-tight font-bold text-primary-800">{{project.title}}</h2>
+      </div>
+      <div class="carousel w-full max-w-screen-2xl mx-auto rounded-lg shadow-lg overflow-hidden">
+        {% for i in 0..project.images.len() %}
+          <div id="slide{{ i+1 }}" class="carousel-item relative w-full">
+            <img src="https://pocketbase.sakura.pm/api/files/num63jj3oy768ue/{{ project.id }}/{{project.images[i]}}" class="w-full">
+            <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+              <a href="#slide{{(i + project.images.len() - 1) % project.images.len() + 1}}" class="btn btn-circle">❮</a>
+              <a href="#slide{{(i + project.images.len() - 1) % project.images.len() + 1}}" class="btn btn-circle">❯</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Cards unterhalb des Carousels -->
+    <div class="container mx-auto px-4 lg:px-6 py-8 lg:py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {{ project.cards|safe }}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

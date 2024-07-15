@@ -1,13 +1,13 @@
-use crate::db_query::{fetch_about_me, fetch_projects, AboutMe, ProjectShowcase};
+use crate::db_query::{
+    fetch_about_me, fetch_project_details, fetch_projects, AboutMe, ProjectDetails, ProjectShowcase,
+};
 use askama_rocket::Template;
 use include_dir::{include_dir, Dir};
 use rocket::http::ContentType;
 use rocket::response::content::RawJson;
-use rocket_json_response::{
-    serialize_to_json, JSONResponse, JSONResponseCode, JSONResponseWithoutData,
-};
 use serde::Serialize;
 use std::path::PathBuf;
+
 #[derive(Template)]
 #[template(path = "index.html")]
 pub struct IndexTemplate;
@@ -15,6 +15,21 @@ pub struct IndexTemplate;
 #[rocket::get("/")]
 pub fn index() -> IndexTemplate {
     IndexTemplate
+}
+
+#[derive(Template)]
+#[template(path = "project_details.html")]
+pub struct ProjectDetailsTemplate {
+    pub projects_showcase_vec: Vec<ProjectDetails>,
+}
+
+#[rocket::get("/project-details/<project_slug>")]
+pub async fn project_details(project_slug: &str) -> ProjectDetailsTemplate {
+    let project_details = fetch_project_details(project_slug).await;
+    ProjectDetailsTemplate {
+        projects_showcase_vec: project_details
+            .expect("could not fetch Project Showcase Entries from Pocketbase"),
+    }
 }
 
 #[derive(Template)]
@@ -40,6 +55,7 @@ pub struct ProjectsTemplate {
 
 #[rocket::get("/projects")]
 pub async fn projects() -> ProjectsTemplate {
+    // fetch_project_details().await;
     let projects_vec = fetch_projects().await;
     println!("{:#?}", projects_vec);
     ProjectsTemplate {
@@ -47,6 +63,16 @@ pub async fn projects() -> ProjectsTemplate {
             .expect("could not fetch Project Showcase Entries from Pocketbase"),
     }
 }
+
+#[derive(Template)]
+#[template(path = "modal.html")]
+pub struct ModalTemplate;
+
+#[rocket::get("/modal")]
+pub fn modal() -> ModalTemplate {
+    ModalTemplate
+}
+
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/static");
 
 #[rocket::get("/static/<path..>", rank = 100)]
