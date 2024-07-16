@@ -15,8 +15,8 @@ struct Item {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct ResponseData {
-    items: Vec<Item>,
+struct ResponseData<T> {
+    items: Vec<T>,
 }
 
 pub async fn fetch_about_me() -> Result<Vec<AboutMe>> {
@@ -46,13 +46,13 @@ pub async fn fetch_about_me() -> Result<Vec<AboutMe>> {
         .query(&params)
         .send()
         .await?
-        .json::<ResponseData>()
+        .json::<ResponseData<_>>()
         .await?;
 
     let about_me_vec = res
         .items
         .into_iter()
-        .map(|item| AboutMe {
+        .map(|item: AboutMe| AboutMe {
             about_me: item.about_me,
         })
         .collect();
