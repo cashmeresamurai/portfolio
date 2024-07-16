@@ -13,7 +13,7 @@ use std::path::PathBuf;
 pub struct IndexTemplate;
 
 #[rocket::get("/")]
-pub fn index() -> IndexTemplate {
+pub async fn index() -> IndexTemplate {
     IndexTemplate
 }
 
