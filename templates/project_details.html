@@ -15,7 +15,7 @@
             <img src="https://pocketbase.sakura.pm/api/files/num63jj3oy768ue/{{ project.id }}/{{project.images[i]}}" class="w-full">
             <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
               <a href="#slide{{(i + project.images.len() - 1) % project.images.len() + 1}}" class="btn btn-circle">❮</a>
-              <a href="#slide{{(i + project.images.len() - 1) % project.images.len() + 1}}" class="btn btn-circle">❯</a>
+              <a href="#slide{{(i + project.images.len() + 1) % project.images.len() + 1}}" class="btn btn-circle">❯</a>
             </div>
           </div>
         {% endfor %}
