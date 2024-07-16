@@ -1,6 +1,4 @@
-use crate::db_query::{
-    fetch_about_me, fetch_project_details, fetch_projects, AboutMe, ProjectDetails, ProjectShowcase,
-};
+use crate::pocketbase::*;
 use askama_rocket::Template;
 use include_dir::{include_dir, Dir};
 use rocket::http::ContentType;
@@ -25,7 +23,11 @@ pub struct ProjectDetailsTemplate {
 
 #[rocket::get("/project-details/<project_slug>")]
 pub async fn project_details(project_slug: &str) -> ProjectDetailsTemplate {
-    let project_details = fetch_project_details(project_slug).await;
+    let project_details = get_collection::<ProjectDetails>(
+        "project_details",
+        Some(&format!("identifier='{}'", project_slug)),
+    )
+    .await;
     ProjectDetailsTemplate {
         projects_showcase_vec: project_details
             .expect("could not fetch Project Showcase Entries from Pocketbase"),
@@ -40,7 +42,7 @@ pub struct AboutMeTemplate {
 
 #[rocket::get("/about-me")]
 pub async fn about_me() -> AboutMeTemplate {
-    let about_me_entries = fetch_about_me().await;
+    let about_me_entries = get_collection::<AboutMe>("about_me", None).await;
     AboutMeTemplate {
         about_me_entries: about_me_entries
             .expect("could not fetch About Me Entries from Pocketbase"),
@@ -56,21 +58,12 @@ pub struct ProjectsTemplate {
 #[rocket::get("/projects")]
 pub async fn projects() -> ProjectsTemplate {
     // fetch_project_details().await;
-    let projects_vec = fetch_projects().await;
+    let projects_vec = get_collection::<ProjectShowcase>("project_showcase", None).await;
     println!("{:#?}", projects_vec);
     ProjectsTemplate {
         projects_showcase_vec: projects_vec
             .expect("could not fetch Project Showcase Entries from Pocketbase"),
     }
-}
-
-#[derive(Template)]
-#[template(path = "modal.html")]
-pub struct ModalTemplate;
-
-#[rocket::get("/modal")]
-pub fn modal() -> ModalTemplate {
-    ModalTemplate
 }
 
 static PROJECT_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/static");
