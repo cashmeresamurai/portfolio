@@ -6,14 +6,12 @@ use std::env;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AboutMe {
-    pub entry_title: String,
-    pub content: String,
+    pub about_me: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Item {
-    entry_title: String,
-    content: String,
+    about_me: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -55,8 +53,7 @@ pub async fn fetch_about_me() -> Result<Vec<AboutMe>> {
         .items
         .into_iter()
         .map(|item| AboutMe {
-            entry_title: item.entry_title,
-            content: item.content,
+            about_me: item.about_me,
         })
         .collect();
 
