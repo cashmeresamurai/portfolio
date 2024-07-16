@@ -3,17 +3,6 @@
 {% block content %}
   {% for project in projects_showcase_vec %}
     <!-- Modal Button and Dialog -->
-    <button class="btn fixed bottom-5 right-5" hx-get="/modal" hx-target="#htmx_modal" hx-trigger="click" hx-on:click="daisy_modal.showModal()">Open Modal</button>
-
-    <dialog id="daisy_modal" class="modal">
-      <div class="modal-box" id="htmx_modal">
-        <h3 class="text-lg font-bold">Hello!</h3>
-        <p class="py-4">Press ESC key or click outside to close</p>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button class="btn">close</button>
-      </form>
-    </dialog>
 
     <!-- Carousel mit angepasster Breite -->
     <div class="container mx-auto px-4 lg:px-6 py-8 lg:py-16">
