@@ -6,3 +6,12 @@ package-lock.json
 package.json
 tailwind.config.js
 ./postcss.config.js
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml

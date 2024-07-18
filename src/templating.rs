@@ -1,8 +1,12 @@
-use crate::pocketbase::*;
+use crate::pocketbase::{get_collection, AboutMe, ProjectDetails, ProjectShowcase};
 use askama_rocket::Template;
 use include_dir::{include_dir, Dir};
+use rocket::form::Form;
 use rocket::http::ContentType;
+use rocket::http::RawStr;
+use rocket::post;
 use rocket::response::content::RawJson;
+use rocket::FromForm;
 use serde::Serialize;
 use std::path::PathBuf;
 
@@ -80,6 +84,24 @@ pub async fn static_files(path: PathBuf) -> Option<(ContentType, Vec<u8>)> {
         .unwrap_or(ContentType::Binary);
 
     Some((content_type, data.contents().to_vec()))
+}
+
+#[derive(Template)]
+#[template(path = "editor.html")]
+pub struct EditorTemplate;
+
+#[rocket::get("/editor")]
+pub async fn editor() -> EditorTemplate {
+    EditorTemplate
+}
+
+#[derive(FromForm)]
+pub struct UserInput<'r> {
+    mytextarea: &'r str,
+}
+#[post("/submit", data = "<user_input>")]
+pub async fn submit_task(user_input: Form<UserInput<'_>>) -> String {
+    format!("Your value: {}", user_input.mytextarea)
 }
 
 #[derive(Serialize)]

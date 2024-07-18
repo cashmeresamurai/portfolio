@@ -2,10 +2,11 @@
 extern crate rocket;
 mod templating;
 use templating::{
-    about_me, index, project_details, projects, return_matrix_client, return_matrix_server,
-    static_files,
+    about_me, editor, index, project_details, projects, return_matrix_client, return_matrix_server,
+    static_files, submit_task,
 };
 mod pocketbase;
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -22,6 +23,8 @@ fn rocket() -> _ {
                 static_files,
                 projects,
                 project_details,
+                editor,
+                submit_task,
                 return_matrix_server,
                 return_matrix_client
             ],

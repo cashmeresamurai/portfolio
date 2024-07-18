@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <html data-theme="catppuccin-latte">
+  <title>sakura</title>
+
+  <script src="/static/htmx.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/drab@5.4.2/dialog/define.iife.js"></script>
+  <link rel="stylesheet" href="/static/output.css" />
+
+  <script src="/static/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    tinymce.init({
+      selector: '#mytextarea',
+      license_key: 'gpl',
+      plugins: 'importcss code save',
+      toolbar: 'save',
+      content_css: '/static/output.css',
+      importcss_append: true,
+      toolbar: 'undo redo | formatselect | bold italic backcolor | \
+                alignleft aligncenter alignright alignjustify | \
+                bullist numlist outdent indent | removeformat | code',
+      style_formats: [
+        {title: 'Bold', inline: 'b'},
+        {title: 'Italic', inline: 'i'},
+        {title: 'Underline', inline: 'u'},
+        {title: 'Paragraph', block: 'p'},
+        {title: 'Header 1', block: 'h1'},
+        {title: 'Header 2', block: 'h2'},
+        {title: 'Header 3', block: 'h3'},
+        {title: 'Bullet List', block: 'ul'},
+        {title: 'Numbered List', block: 'ol'},
+        {title: 'Blockquote', block: 'blockquote'},
+        {title: 'Align Left', selector: 'p,h1,h2,h3,h4,h5,h6', classes: 'text-left'},
+        {title: 'Align Center', selector: 'p,h1,h2,h3,h4,h5,h6', classes: 'text-center'},
+        {title: 'Align Right', selector: 'p,h1,h2,h3,h4,h5,h6', classes: 'text-right'},
+        {title: 'Align Justify', selector: 'p,h1,h2,h3,h4,h5,h6', classes: 'text-justify'}
+      ],
+      setup: function (editor) {
+        editor.on('init', function () {
+          editor.getBody().classList.add('prose');
+        });
+      }
+    });
+  </script>
+
+
+</head>
+<header>
+  {% include "components/navbar.html" %}
+</header>
+
+<body hx-target="this">
+  {% block content %}
+  {% endblock %}
+</body>
+
+</html>
