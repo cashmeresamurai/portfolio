@@ -71,57 +71,57 @@ where
     Ok(response_data.items)
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct LoginStruct {
-    identity: String,
-    password: String,
-}
+// #[derive(Debug, Serialize, Deserialize)]
+// pub struct LoginStruct {
+//     identity: String,
+//     password: String,
+// }
 
-#[derive(Debug, Serialize, Deserialize)]
-struct ResponseToken {
-    token: String,
-}
+// #[derive(Debug, Serialize, Deserialize)]
+// struct ResponseToken {
+//     token: String,
+// }
 
-pub async fn login_user() -> Result<()> {
-    let client: Client = Client::new();
+// pub async fn login_user() -> Result<()> {
+//     let client: Client = Client::new();
 
-    let mut headers: HeaderMap = HeaderMap::new();
+//     let mut headers: HeaderMap = HeaderMap::new();
 
-    let authorization: String = env::var("AUTHORIZATION").expect("could not get authorization key");
+//     let authorization: String = env::var("AUTHORIZATION").expect("could not get authorization key");
 
-    headers.insert("Authorization", HeaderValue::from_str(&authorization)?);
+//     headers.insert("Authorization", HeaderValue::from_str(&authorization)?);
 
-    let login: LoginStruct = LoginStruct {
-        identity: "mur1chan".to_string(),
-        password: "1HI7o7Naxh1bELr1".to_string(),
-    };
-    let response = client
-        .post("https://pocketbase.sakura.pm/api/collections/users/auth-with-password")
-        .headers(headers)
-        .json(&login)
-        .send()
-        .await?;
+//     let login: LoginStruct = LoginStruct {
+//         identity: "mur1chan".to_string(),
+//         password: "1HI7o7Naxh1bELr1".to_string(),
+//     };
+//     let response = client
+//         .post("https://pocketbase.sakura.pm/api/collections/users/auth-with-password")
+//         .headers(headers)
+//         .json(&login)
+//         .send()
+//         .await?;
 
-    // Debugging-Druck der tatsächlichen Antwort
-    let response_text = response.text().await?;
-    println!("Response: {}", response_text);
+//     // Debugging-Druck der tatsächlichen Antwort
+//     let response_text = response.text().await?;
+//     println!("Response: {}", response_text);
 
-    // Anpassen der Struktur, falls notwendig
-    let response_data: ResponseToken = serde_json::from_str(&response_text)?;
+//     // Anpassen der Struktur, falls notwendig
+//     let response_data: ResponseToken = serde_json::from_str(&response_text)?;
 
-    // println!("Token: {}", response_data.token);
+//     // println!("Token: {}", response_data.token);
 
-    Ok(())
-}
+//     Ok(())
+// }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use tokio;
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
+//     use tokio;
 
-    #[tokio::test]
-    async fn test_login() {
-        let result = login_user().await;
-        println!("{:#?}", result)
-    }
-}
+//     #[tokio::test]
+//     async fn test_login() {
+//         let result = login_user().await;
+//         println!("{:#?}", result)
+//     }
+// }

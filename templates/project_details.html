@@ -12,7 +12,7 @@
       <div class="carousel w-full max-w-screen-2xl mx-auto rounded-lg shadow-lg overflow-hidden">
         {% for i in 0..project.images.len() %}
           <div id="slide{{ i+1 }}" class="carousel-item relative w-full">
-            <img src="https://pocketbase.sakura.pm/api/files/num63jj3oy768ue/{{ project.id }}/{{project.images[i]}}" class="w-full">
+            <img src="https://pocketbase.sakura.pm/api/files/jlbrjvr71iurqcv/{{ project.id }}/{{project.images[i]}}" class="w-full">
             <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
               <a href="#slide{{(i + project.images.len() - 1) % project.images.len() + 1}}" class="btn btn-circle">❮</a>
               <a href="#slide{{(i + project.images.len() + 1) % project.images.len() + 1}}" class="btn btn-circle">❯</a>

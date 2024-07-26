@@ -23,7 +23,7 @@ fn rocket() -> _ {
                 static_files,
                 projects,
                 project_details,
-                editor,
+                // editor,
                 submit_task,
                 return_matrix_server,
                 return_matrix_client
