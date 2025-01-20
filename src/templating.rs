@@ -122,21 +122,21 @@ pub struct MatrixServer {
 }
 
 #[rocket::get("/.well-known/matrix/client")]
-pub async fn return_matrix_client() -> RawJson<String> {
+pub async fn return_matrix_client() -> (ContentType, RawJson<String>) {
     let response = MatrixClient {
         homeserver: HomeServer {
             base_url: "https://matrix.sakura.pm".to_string(),
         },
     };
     let json_response = serde_json::to_string(&response).unwrap();
-    RawJson(json_response)
+    (ContentType::new("application", "json"), RawJson(json_response))
 }
 
 #[rocket::get("/.well-known/matrix/server")]
-pub async fn return_matrix_server() -> RawJson<String> {
+pub async fn return_matrix_server() -> (ContentType, RawJson<String>) {
     let response = MatrixServer {
         server: "matrix.sakura.pm:8448".to_string(),
     };
     let json_response = serde_json::to_string(&response).unwrap();
-    RawJson(json_response)
+    (ContentType::new("application", "json"), RawJson(json_response))
 }

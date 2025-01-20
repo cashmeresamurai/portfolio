@@ -5,8 +5,8 @@
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ 
-  pkgs.git 
+  packages = [
+  pkgs.git
   pkgs.openssl
   pkgs.pkg-config
   ];
@@ -17,9 +17,6 @@
   enterShell = ''
     hello
     git --version
-    export AUTHORIZATION=$(cat ./.auth)
-    export SHELL=$(which fish)
-    exec fish
   '';
 
   # https://devenv.sh/tests/
