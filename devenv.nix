@@ -1,4 +1,10 @@
-{ pkgs, lib, config, inputs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}:
 
 {
   # https://devenv.sh/basics/
@@ -6,9 +12,10 @@
 
   # https://devenv.sh/packages/
   packages = [
-  pkgs.git
-  pkgs.openssl
-  pkgs.pkg-config
+    pkgs.git
+    pkgs.openssl
+    pkgs.pkg-config
+    #pkgs.nixpacks
   ];
 
   # https://devenv.sh/scripts/
