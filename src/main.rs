@@ -25,7 +25,15 @@ impl Fairing for CORS {
         response.set_header(Header::new("Access-Control-Allow-Origin", "*"));
         response.set_header(Header::new("Access-Control-Allow-Methods", "GET, OPTIONS"));
         response.set_header(Header::new("Access-Control-Allow-Headers", "*"));
-        response.set_header(Header::new("Content-Type", "application/json"));
+
+        // X-Frame-Options entfernen oder anpassen
+        response.remove_header("X-Frame-Options");
+
+        // CSP für Embedding erlauben
+        response.set_header(Header::new(
+            "Content-Security-Policy",
+            "frame-ancestors 'self' *;",
+        ));
     }
 }
 
